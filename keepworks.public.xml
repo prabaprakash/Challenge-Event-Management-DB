@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="keepworks" schema="public" type="PostgreSQL - 9.6.1">
+   <tables>
+      <table name="attendance_types" numRows="3" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="type" nullable="false" remarks="" size="2147483647" type="varchar">
+            <child column="attendance" foreignKey="user_event_attendance_attendance_fkey" implied="false" onDeleteCascade="false" table="user_event_attendance"/>
+         </column>
+      </table>
+      <table name="country" numRows="1" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('country_id_seq'::regclass)" digits="0" id="0" name="country_id" nullable="false" remarks="" size="10" type="serial">
+            <child column="country_id" foreignKey="state_country_id_fkey" implied="false" onDeleteCascade="false" table="state"/>
+            <child column="country_id" foreignKey="user_details_country_id_fkey" implied="false" onDeleteCascade="false" table="user_details"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="country_name" nullable="false" remarks="" size="2147483647" type="varchar"/>
+      </table>
+      <table name="district" numRows="1" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('district_id_seq'::regclass)" digits="0" id="0" name="district_id" nullable="false" remarks="" size="10" type="serial">
+            <child column="district_id" foreignKey="user_details_district_id_fkey" implied="false" onDeleteCascade="false" table="user_details"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="district_name" nullable="false" remarks="" size="2147483647" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="state_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="state_id" foreignKey="district_state_id_fkey" implied="false" onDeleteCascade="false" table="state"/>
+         </column>
+      </table>
+      <table name="state" numRows="2" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('state_id_seq'::regclass)" digits="0" id="0" name="state_id" nullable="false" remarks="" size="10" type="serial">
+            <child column="state_id" foreignKey="district_state_id_fkey" implied="false" onDeleteCascade="false" table="district"/>
+            <child column="state_id" foreignKey="user_details_state_id_fkey" implied="false" onDeleteCascade="false" table="user_details"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="state_name" nullable="false" remarks="" size="2147483647" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="country_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="country_id" foreignKey="state_country_id_fkey" implied="false" onDeleteCascade="false" table="country"/>
+         </column>
+         <primaryKey column="state_id" sequenceNumberInPK="1"/>
+      </table>
+      <table name="user_comments" numRows="5" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('user_comments_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial">
+            <child column="comment_id" foreignKey="user_likes_comment_id_fkey" implied="false" onDeleteCascade="false" table="user_likes"/>
+            <child column="comment_id" foreignKey="user_replies_comment_id_fkey" implied="false" onDeleteCascade="false" table="user_replies"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="user_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_comments_user_id_fkey" implied="false" onDeleteCascade="false" table="user_credentials"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="story_id" nullable="true" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_comments_story_id_fkey" implied="false" onDeleteCascade="false" table="user_stories"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="3" name="comment" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="'2017-01-05 08:52:26.642724+00'::timestamp with time zone" digits="6" id="4" name="created_at" nullable="false" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="6" id="5" name="updated_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="0" id="6" name="event_id" nullable="true" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_comments_event_id_fkey" implied="false" onDeleteCascade="false" table="user_events"/>
+         </column>
+      </table>
+      <table name="user_credentials" numRows="4" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('user_credentials_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial">
+            <child column="user_id" foreignKey="user_comments_user_id_fkey" implied="false" onDeleteCascade="false" table="user_comments"/>
+            <child column="user_id" foreignKey="user_details_user_id_fkey" implied="false" onDeleteCascade="false" table="user_details"/>
+            <child column="user_id" foreignKey="user_event_attendance_user_id_fkey" implied="false" onDeleteCascade="false" table="user_event_attendance"/>
+            <child column="user_id" foreignKey="user_events_user_id_fkey" implied="false" onDeleteCascade="false" table="user_events"/>
+            <child column="user_id" foreignKey="user_likes_user_id_fkey" implied="false" onDeleteCascade="false" table="user_likes"/>
+            <child column="user_id" foreignKey="user_replies_user_id_fkey" implied="false" onDeleteCascade="false" table="user_replies"/>
+            <child column="user_id" foreignKey="user_stories_user_id_fkey" implied="false" onDeleteCascade="false" table="user_stories"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="username" nullable="false" remarks="" size="30" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="email" nullable="false" remarks="" size="30" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="mobile" nullable="false" remarks="" size="10" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="password" nullable="false" remarks="" size="100" type="varchar"/>
+         <column autoUpdated="false" defaultValue="'2017-01-05 08:09:45.923511+00'::timestamp with time zone" digits="6" id="5" name="created_at" nullable="false" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="6" id="6" name="updated_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="0" id="7" name="user_type" nullable="false" remarks="" size="30" type="varchar">
+            <parent column="user_type" foreignKey="user_credentials_user_type_fkey" implied="false" onDeleteCascade="false" table="user_types"/>
+         </column>
+      </table>
+      <table name="user_details" numRows="4" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="user_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_details_user_id_fkey" implied="false" onDeleteCascade="false" table="user_credentials"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="first_name" nullable="false" remarks="" size="2147483647" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="2" name="last_name" nullable="false" remarks="" size="2147483647" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="dob" nullable="false" remarks="" size="13" type="date"/>
+         <column autoUpdated="false" digits="0" id="4" name="address_1" nullable="false" remarks="" size="2147483647" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="5" name="address_2" nullable="false" remarks="" size="2147483647" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="6" name="pincode" nullable="false" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="7" name="district_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="district_id" foreignKey="user_details_district_id_fkey" implied="false" onDeleteCascade="false" table="district"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="8" name="state_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="state_id" foreignKey="user_details_state_id_fkey" implied="false" onDeleteCascade="false" table="state"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="9" name="country_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="country_id" foreignKey="user_details_country_id_fkey" implied="false" onDeleteCascade="false" table="country"/>
+         </column>
+         <column autoUpdated="false" defaultValue="'2017-01-05 08:18:01.832335+00'::timestamp with time zone" digits="6" id="10" name="created_at" nullable="false" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="6" id="11" name="updated_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="true" defaultValue="nextval('user_details_id_seq'::regclass)" digits="0" id="12" name="id" nullable="false" remarks="" size="10" type="serial"/>
+      </table>
+      <table name="user_event_attendance" numRows="4" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('user_event_attendance_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial"/>
+         <column autoUpdated="false" digits="0" id="1" name="user_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_event_attendance_user_id_fkey" implied="false" onDeleteCascade="false" table="user_credentials"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="event_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_event_attendance_event_id_fkey" implied="false" onDeleteCascade="false" table="user_events"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="3" name="attendance" nullable="false" remarks="" size="2147483647" type="varchar">
+            <parent column="type" foreignKey="user_event_attendance_attendance_fkey" implied="false" onDeleteCascade="false" table="attendance_types"/>
+         </column>
+         <column autoUpdated="false" defaultValue="'2017-01-05 14:35:24.142473+00'::timestamp with time zone" digits="6" id="4" name="created_at" nullable="false" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="6" id="5" name="updated_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="0" id="6" name="event_bid_id" nullable="true" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_event_attendance_event_bid_id_fkey" implied="false" onDeleteCascade="false" table="user_event_bids"/>
+         </column>
+      </table>
+      <table name="user_event_bids" numRows="3" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('user_event_bids_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial">
+            <child column="event_bid_id" foreignKey="user_event_attendance_event_bid_id_fkey" implied="false" onDeleteCascade="false" table="user_event_attendance"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="event_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_event_bids_event_id_fkey" implied="false" onDeleteCascade="false" table="user_events"/>
+         </column>
+         <column autoUpdated="false" digits="17" id="2" name="bid" nullable="false" remarks="" size="17" type="float8"/>
+         <column autoUpdated="false" defaultValue="'2017-01-06 11:17:06.492581+00'::timestamp with time zone" digits="6" id="3" name="created_at" nullable="false" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="6" id="4" name="updated_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+      </table>
+      <table name="user_events" numRows="2" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('user_events_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial">
+            <child column="event_id" foreignKey="user_comments_event_id_fkey" implied="false" onDeleteCascade="false" table="user_comments"/>
+            <child column="event_id" foreignKey="user_event_attendance_event_id_fkey" implied="false" onDeleteCascade="false" table="user_event_attendance"/>
+            <child column="event_id" foreignKey="user_event_bids_event_id_fkey" implied="false" onDeleteCascade="false" table="user_event_bids"/>
+            <child column="event_id" foreignKey="user_likes_event_id_fkey" implied="false" onDeleteCascade="false" table="user_likes"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="user_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_events_user_id_fkey" implied="false" onDeleteCascade="false" table="user_credentials"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="event_heading" nullable="false" remarks="" size="2147483647" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="3" name="event" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" digits="6" id="4" name="event_date_time" nullable="false" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" defaultValue="'2017-01-05 14:31:02.406904+00'::timestamp with time zone" digits="6" id="5" name="created_at" nullable="false" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="6" id="6" name="updated_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+      </table>
+      <table name="user_likes" numRows="5" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="user_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_likes_user_id_fkey" implied="false" onDeleteCascade="false" table="user_credentials"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="story_id" nullable="true" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_likes_story_id_fkey" implied="false" onDeleteCascade="false" table="user_stories"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="comment_id" nullable="true" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_likes_comment_id_fkey" implied="false" onDeleteCascade="false" table="user_comments"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="3" name="reply_id" nullable="true" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_likes_reply_id_fkey" implied="false" onDeleteCascade="false" table="user_replies"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="4" name="like" nullable="false" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" defaultValue="'2017-01-05 10:46:46.852656+00'::timestamp with time zone" digits="6" id="5" name="created_at" nullable="false" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="6" id="6" name="updated_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="0" id="7" name="event_id" nullable="true" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_likes_event_id_fkey" implied="false" onDeleteCascade="false" table="user_events"/>
+         </column>
+         <column autoUpdated="true" defaultValue="nextval('user_likes_id_seq'::regclass)" digits="0" id="8" name="id" nullable="false" remarks="" size="10" type="serial"/>
+      </table>
+      <table name="user_replies" numRows="4" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('user_replies_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial">
+            <child column="reply_id" foreignKey="user_likes_reply_id_fkey" implied="false" onDeleteCascade="false" table="user_likes"/>
+            <child column="parent_id" foreignKey="user_replies_partent_id_fkey" implied="false" onDeleteCascade="false" table="user_replies"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="user_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_replies_user_id_fkey" implied="false" onDeleteCascade="false" table="user_credentials"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="comment_id" nullable="true" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_replies_comment_id_fkey" implied="false" onDeleteCascade="false" table="user_comments"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="3" name="reply" nullable="false" remarks="" size="2147483647" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="4" name="parent_id" nullable="true" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_replies_partent_id_fkey" implied="false" onDeleteCascade="false" table="user_replies"/>
+         </column>
+         <column autoUpdated="false" defaultValue="'2017-01-05 10:29:50.52406+00'::timestamp with time zone" digits="6" id="5" name="created_at" nullable="false" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="6" id="6" name="updated_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+      </table>
+      <table name="user_stories" numRows="1" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('user_stories_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="serial">
+            <child column="story_id" foreignKey="user_comments_story_id_fkey" implied="false" onDeleteCascade="false" table="user_comments"/>
+            <child column="story_id" foreignKey="user_likes_story_id_fkey" implied="false" onDeleteCascade="false" table="user_likes"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="user_id" nullable="false" remarks="" size="10" type="int4">
+            <parent column="id" foreignKey="user_stories_user_id_fkey" implied="false" onDeleteCascade="false" table="user_credentials"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="story" nullable="false" remarks="" size="2147483647" type="text"/>
+         <column autoUpdated="false" defaultValue="'2017-01-05 08:41:44.20755+00'::timestamp with time zone" digits="6" id="3" name="created_at" nullable="false" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="6" id="4" name="updated_at" nullable="true" remarks="" size="35" type="timestamptz"/>
+         <column autoUpdated="false" digits="0" id="5" name="story_heading" nullable="false" remarks="" size="2147483647" type="varchar"/>
+      </table>
+      <table name="user_types" numRows="3" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="user_type" nullable="false" remarks="" size="30" type="varchar">
+            <child column="user_type" foreignKey="user_credentials_user_type_fkey" implied="false" onDeleteCascade="false" table="user_credentials"/>
+         </column>
+         <primaryKey column="user_type" sequenceNumberInPK="1"/>
+      </table>
+   </tables>
+</database>
