@@ -1,4 +1,4 @@
-# Challenge_Event_DB
+# Intuitive Event Management Database 
 Sql Dump : https://github.com/prabaprakash/Challenge_Event_DB/blob/master/sqldump.sql
 
 Event Management Database Schema

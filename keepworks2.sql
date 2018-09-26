@@ -632,10 +632,10 @@ SELECT pg_catalog.setval('user_comments_id_seq', 7, true);
 --
 
 COPY user_credentials (id, username, email, mobile, password, created_at, updated_at, user_type) FROM stdin;
-1	praba	prabakaran1993@gmail.com	8807574260	password	2017-01-05 08:09:45.923511+00	\N	user
-2	sam	sam@gmail.com	8807574261	password	2017-01-05 08:09:45.923511+00	\N	user
-3	mugesh	mugesh@gmail.com	8807574263	password	2017-01-05 08:09:45.923511+00	\N	user
-4	tejdeep	tejdeep@gmail.com	8807574264	password	2017-01-05 08:09:45.923511+00	\N	volunteer
+1	praba	xxx@gmail.com	1111111111	password	2017-01-05 08:09:45.923511+00	\N	user
+2	sam	yyy@gmail.com	2222222222	password	2017-01-05 08:09:45.923511+00	\N	user
+3	mugesh	zzz@gmail.com	3333333333	password	2017-01-05 08:09:45.923511+00	\N	user
+4	tejdeep	aaaa@gmail.com	4444444444	password	2017-01-05 08:09:45.923511+00	\N	volunteer
 \.
 
 
